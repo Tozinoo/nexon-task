@@ -1,0 +1,54 @@
+services:
+  gateway:
+    build: ./gateway
+    container_name: gateway
+    ports:
+      - '3000:3000'
+    depends_on:
+      - auth
+      - event
+    networks:
+      - backend
+    command: npm run start:prod
+    restart: always
+
+  auth:
+    build: ./auth
+    container_name: auth
+    env_file:
+      - ./auth/.env
+    networks:
+      - backend
+    depends_on:
+      - mongo
+    command: npm run start:prod
+    restart: always
+
+  event:
+    build: ./event
+    container_name: event
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/event_db
+    networks:
+      - backend
+    depends_on:
+      - mongo
+    command: npm run start:prod
+    restart: always
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - backend
+    command: ["mongod", "--quiet"]
+
+volumes:
+  mongo_data:
+
+networks:
+  backend:
