@@ -10,6 +10,20 @@ docker-compose down && docker-compose up --build
 ```
 
 ## API 명세서
+### 테스트 계정 정보
+
+2025-05-25: 테스트 계정 정보만 추가 (코드 수정 없음)
+
+`/auth` 서버는 초기 실행 시 아래와 같이 4개 역할의 계정이 자동으로 생성됩니다.
+
+| username | password     | role     |
+| -------- | ------------ | -------- |
+| user     | Password123! | USER     |
+| operator | Password123! | OPERATOR |
+| auditor  | Password123! | AUDITOR  |
+| admin    | Password123! | ADMIN    |
+
+* 최초 컨테이너 빌드 시 기존 유저가 모두 삭제되고 위 계정들이 다시 생성됩니다.
 ### **Auth 서버**
 
 #### 1. 회원가입
